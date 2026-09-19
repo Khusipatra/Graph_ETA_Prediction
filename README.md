@@ -14,6 +14,7 @@
 - [Getting Started](#getting-started)
 - [Running the App](#running-the-app)
 - [Tech Stack](#tech-stack)
+- [App](#App)
 
 ---
 
@@ -162,3 +163,6 @@ streamlit run App.py
 | `xgboost` | Gradient boosting models |
 | `matplotlib` | All charts and network visualizations |
 | `streamlit` | Interactive dashboard (`App.py`) |
+
+##App
+https://delhiveryeta2026.streamlit.app/
