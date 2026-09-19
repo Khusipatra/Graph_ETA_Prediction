@@ -14,7 +14,7 @@
 - [Getting Started](#getting-started)
 - [Running the App](#running-the-app)
 - [Tech Stack](#tech-stack)
-- [App](#App)
+- [Live App](#live-app)
 
 ---
 
