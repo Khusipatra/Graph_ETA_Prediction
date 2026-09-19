@@ -238,17 +238,30 @@ if page == " Model Comparison":
     cb_graph_acc  = results.get("cb_graph_acc15", 0.0)
     xgb_graph_acc = results.get("xgb_graph_acc15", 0.0)
 
-    if prediction_meta is not None:
+    # The notebook now saves OSRM metrics directly into results.pkl — prefer that
+    # (fast, no dependency on the raw CSV). Fall back to recomputing from
+    # Dataset/delivery_data.csv only for results.pkl files saved by an older
+    # version of the notebook that didn't include these keys yet.
+    if "osrm_mae" in results:
+        osrm_mae = results["osrm_mae"]
+        osrm_r2 = results["osrm_r2"]
+        osrm_acc15 = results["osrm_acc15"]
+    elif prediction_meta is not None:
         osrm_mae = prediction_meta["osrm_mae"]
         osrm_r2 = prediction_meta["osrm_r2"]
         osrm_acc15 = prediction_meta["osrm_acc15"]
+        st.info(
+            "OSRM metrics were recomputed from `Dataset/delivery_data.csv` because "
+            "`results.pkl` was saved by an older version of the notebook. "
+            "Re-run the notebook to speed this up."
+        )
     else:
         osrm_mae = None
         osrm_r2 = None
         osrm_acc15 = None
         st.info(
             "OSRM metrics are shown only when `Dataset/delivery_data.csv` "
-            "is available. The notebook does not persist OSRM metrics in `results.pkl`."
+            "is available, or when `results.pkl` includes them."
         )
 
     model_names = [
