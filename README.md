@@ -165,6 +165,4 @@ streamlit run App.py
 | `streamlit` | Interactive dashboard (`App.py`) |
 
 ## Live App
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://delhiveryeta2026.streamlit.app/)
-
 **[Try the live app →](https://delhiveryeta2026.streamlit.app/)**
