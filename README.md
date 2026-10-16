@@ -10,6 +10,7 @@
 - [Project Structure](#project-structure)
 - [Pipeline Architecture](#pipeline-architecture)
 - [Models](#models)
+- [Results](#results)
 - [Key Outputs](#key-outputs)
 - [Getting Started](#getting-started)
 - [Running the App](#running-the-app)
@@ -40,7 +41,16 @@ Graph_ETA_Prediction/
 ├── Dataset/
 │   └── delivery_data.csv               # Raw delivery trip data
 │
-├──plots/                               #all 8 chart
+├── plots/                              # All generated charts
+│   ├── bottleneck_hubs.png             # Top 10 hubs by SLA breach volume and centrality
+│   ├── network_graph.png               # Network visualization of top 50 hubs
+│   ├── delay_analysis.png              # Delay ratio by route type and time of day
+│   ├── model_comparison.png            # MAE and 15%-accuracy across all models
+│   ├── xgb_baseline_importance.png     # Feature importance: XGBoost baseline
+│   ├── xgb_graph_importance.png        # Grouped feature importance: XGBoost + Graph
+│   ├── rf_graph_importance.png         # Grouped feature importance: RF + Graph
+│   ├── cb_graph_importance.png         # Grouped feature importance: CatBoost + Graph
+│   └── ftl_carting_tradeoff.png        # FTL vs Carting delay comparison by risk tier
 │
 ├── app_data/                           # Auto-generated after pipeline run
 │   ├── audit_df.csv                    # Hub-level audit with risk tiers
@@ -104,6 +114,27 @@ Four models are trained and compared on **MAE** (Mean Absolute Error in minutes)
 | XGBoost + Graph | Same graph-enhanced feature set |
 
 Graph embeddings encode: betweenness centrality, PageRank, in/out degree, clustering coefficient, outbound/inbound delay mean, max, std, p90, and interaction terms.
+
+---
+
+## Results
+
+| Model | MAE (min) ↓ | R² ↑ | 15%-Accuracy ↑ |
+|---|---|---|---|
+| OSRM (reference) | 201.90 | 0.6386 | 4.3% |
+| Random Forest Baseline | 47.40 | 0.9772 | 47.1% |
+| Random Forest + Graph | 44.43 | 0.9805 | 48.8% |
+| CatBoost Baseline | 45.15 | 0.9797 | 48.8% |
+| CatBoost + Graph | 40.31 | 0.9837 | 55.3% |
+| XGBoost Baseline | 41.65 | 0.9809 | 54.4% |
+| **XGBoost + Graph** | **37.89** | **0.9831** | **61.3%** |
+| Ensemble (RF+Graph, CB+Graph, XGB+Graph) | 38.64 | 0.9843 | 55.6% |
+
+- **XGBoost + Graph** is the best model, with an MAE of **37.89 min** and **61.3%** accuracy within 15%
+- Graph embeddings improved every model: Random Forest (−2.97 min), CatBoost (−4.84 min), XGBoost (−3.76 min)
+- The best model improves on raw OSRM by **81.2%** (MAE 201.90 → 37.89 min)
+
+![Model Comparison](plots/model_comparison.png)
 
 ---
 
